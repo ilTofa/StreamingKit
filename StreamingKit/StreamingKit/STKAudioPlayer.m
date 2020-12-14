@@ -1122,8 +1122,11 @@ static void AudioFileStreamPacketsProc(void* clientData, UInt32 numberBytes, UIn
     
     if (!seekAlreadyRequested)
     {
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wdeprecated-declarations"
         OSAtomicIncrement32(&seekVersion);
-        
+#pragma GCC diagnostic pop
+
         lockUnlock(&seekLock);
         
         [self wakeupPlaybackThread];
@@ -2619,8 +2622,11 @@ OSStatus AudioConverterCallback(AudioConverterRef inAudioConverter, UInt32* ioNu
 			
 			packetSize = packetDescriptionsIn[i].mDataByteSize;
 			
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wdeprecated-declarations"
             OSAtomicAdd32((int32_t)packetSize, &currentlyReadingEntry->processedPacketsSizeTotal);
             OSAtomicIncrement32(&currentlyReadingEntry->processedPacketsCount);
+#pragma GCC diagnostic pop
         }
     }
     
@@ -3070,8 +3076,11 @@ static OSStatus OutputRenderCallback(void* inRefCon, AudioUnitRenderActionFlags*
 		{
 			if (totalFramesCopied == 0)
 			{
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wdeprecated-declarations"
 				OSAtomicAdd32(inNumberFrames - totalFramesCopied, &audioPlayer->waitingForDataAfterSeekFrameCount);
-				
+#pragma GCC diagnostic pop
+
 				if (audioPlayer->waitingForDataAfterSeekFrameCount > audioPlayer->framesRequiredBeforeWaitingForDataAfterSeekBecomesPlaying)
 				{
 					[audioPlayer setInternalState:STKAudioPlayerInternalStatePlaying ifInState:^BOOL(STKAudioPlayerInternalState state)

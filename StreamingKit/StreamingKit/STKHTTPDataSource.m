@@ -219,7 +219,10 @@
 {
     if (!httpHeaderNotAvailable)
     {
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wdeprecated-declarations"
         CFTypeRef response = CFReadStreamCopyProperty(stream, kCFStreamPropertyHTTPResponseHeader);
+#pragma GCC diagnostic pop
         
         if (response)
         {
@@ -617,6 +620,8 @@
         CFHTTPMessageSetHeaderFieldValue(message, CFSTR("Accept"), CFSTR("*/*"));
         CFHTTPMessageSetHeaderFieldValue(message, CFSTR("Icy-MetaData"), CFSTR("1"));
 
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wdeprecated-declarations"
         self->stream = CFReadStreamCreateForHTTPRequest(NULL, message);
         
         if (self->stream == nil)
@@ -643,6 +648,7 @@
         CFDictionaryRef proxySettings = CFNetworkCopySystemProxySettings();
         CFReadStreamSetProperty(self->stream, kCFStreamPropertyHTTPProxy, proxySettings);
         CFRelease(proxySettings);
+#pragma GCC diagnostic pop
 
         // SSL support
         if ([self->currentUrl.scheme caseInsensitiveCompare:@"https"] == NSOrderedSame)
