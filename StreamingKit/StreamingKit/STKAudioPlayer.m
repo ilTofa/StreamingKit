@@ -1750,7 +1750,7 @@ static void AudioFileStreamPacketsProc(void* clientData, UInt32 numberBytes, UIn
                     return;
                 }
             }
-            
+            error = AudioUnitReset(playbackRateUnit, kAudioUnitScope_Global, 0);
             [self wakeupPlaybackThread];
         }
     }
